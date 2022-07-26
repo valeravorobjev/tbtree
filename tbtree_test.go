@@ -1,8 +1,10 @@
 package tbtree
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestBTree(t *testing.T) {
+func TestBTree_Add(t *testing.T) {
 	btree := new(BTree)
 
 	btree.Add(11)
@@ -39,5 +41,27 @@ func TestBTree(t *testing.T) {
 
 	if btree.root.left == nil || btree.root.left.value != 10 {
 		t.Error("btree.root.left is nil or empty")
+	}
+}
+
+func TestBTree_GetValues(t *testing.T) {
+	btree := new(BTree)
+
+	btree.Add(11)
+	btree.Add(22)
+	btree.Add(30)
+	btree.Add(31)
+	btree.Add(12)
+	btree.Add(10)
+	btree.Add(1)
+	btree.Add(2)
+
+	values := btree.GetValues()
+
+	var tmp = values[0]
+	for i := 1; i < len(values); i++ {
+		if tmp > values[i] {
+			t.Error("values can't order by acc because tmp > current value")
+		}
 	}
 }
