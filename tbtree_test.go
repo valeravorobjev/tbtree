@@ -65,3 +65,27 @@ func TestBTree_GetValues(t *testing.T) {
 		}
 	}
 }
+
+func TestBTree_Contains(t *testing.T) {
+	btree := new(BTree)
+
+	btree.Add(11)
+	btree.Add(22)
+	btree.Add(30)
+	btree.Add(31)
+	btree.Add(12)
+	btree.Add(10)
+	btree.Add(1)
+	btree.Add(2)
+
+	ext := btree.Contains(9)
+	if ext {
+		t.Error("btree isn't contains the value")
+	}
+
+	ext = btree.Contains(12)
+
+	if !ext {
+		t.Error("btree can't find value")
+	}
+}
