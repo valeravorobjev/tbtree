@@ -94,10 +94,10 @@ func TestBTree_Min(t *testing.T) {
 	}
 }
 
-func TestBTree_Delete(t *testing.T) {
+func TestBTree_Remove(t *testing.T) {
 	btree := initTree()
 
-	btree.Delete(12)
+	btree.Remove(12)
 
 	if btree.Contains(12) {
 		t.Error("value 12 has not been removed from the tree")

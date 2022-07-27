@@ -43,9 +43,9 @@ func (b *BTree) Max() float64 {
 	return node.value
 }
 
-// Delete remove value from the tree
-func (b *BTree) Delete(value float64) {
-	delete(b.root, value)
+// Remove delete value from the tree
+func (b *BTree) Remove(value float64) {
+	remove(b.root, value)
 }
 
 // add is a private function for recursive fill tree.
@@ -112,21 +112,21 @@ func max(currentTree *BTreeValue) *BTreeValue {
 	return max(currentTree.right)
 }
 
-// delete method for remove element from the tree
-func delete(currentTree *BTreeValue, value float64) *BTreeValue {
+// remove method for remove element from the tree
+func remove(currentTree *BTreeValue, value float64) *BTreeValue {
 	if currentTree == nil {
 		return currentTree
 	}
 
 	if value < currentTree.value {
-		currentTree.left = delete(currentTree.left, value)
+		currentTree.left = remove(currentTree.left, value)
 	} else if value > currentTree.value {
-		currentTree.right = delete(currentTree.right, value)
+		currentTree.right = remove(currentTree.right, value)
 	} else if currentTree.left != nil && currentTree.right != nil {
 		minNode := min(currentTree.right)
 
 		currentTree.value = minNode.value
-		currentTree.right = delete(currentTree.right, currentTree.value)
+		currentTree.right = remove(currentTree.right, currentTree.value)
 	} else if currentTree.left != nil {
 		currentTree = currentTree.left
 	} else if currentTree.right != nil {
