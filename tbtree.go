@@ -17,7 +17,7 @@ func (b *BTree) Add(value float64) {
 	add(b.root, newTree)
 }
 
-// GetValues return all values from b-tree
+// GetValues return all values from tree
 func (b *BTree) GetValues() []float64 {
 	var values []float64
 	getValues(b.root, &values)
@@ -31,7 +31,24 @@ func (b *BTree) Contains(value float64) bool {
 	return ext
 }
 
-// add is a private function for recursive fill b-tree.
+// Min return minimum value from the tree
+func (b *BTree) Min() float64 {
+	node := min(b.root)
+	return node.value
+}
+
+// Max return maximum value from the tree
+func (b *BTree) Max() float64 {
+	node := max(b.root)
+	return node.value
+}
+
+// Delete remove value from the tree
+func (b *BTree) Delete(value float64) {
+	delete(b.root, value)
+}
+
+// add is a private function for recursive fill tree.
 func add(currentTree *BTreeValue, newTree *BTreeValue) {
 	cmp := compare(currentTree.value, newTree.value)
 
@@ -50,7 +67,7 @@ func add(currentTree *BTreeValue, newTree *BTreeValue) {
 	}
 }
 
-// getValues is the recursive function for return values from b-tree
+// getValues is the recursive function for return values from tree
 func getValues(currentTree *BTreeValue, values *[]float64) {
 	if currentTree == nil {
 		return
@@ -76,6 +93,49 @@ func contains(currentTree *BTreeValue, value float64) bool {
 	}
 
 	return true
+}
+
+// min is the recursive function for get min value
+func min(currentTree *BTreeValue) *BTreeValue {
+	if currentTree.left == nil {
+		return currentTree
+	}
+	return min(currentTree.left)
+}
+
+// max is the recursive function for get max value
+func max(currentTree *BTreeValue) *BTreeValue {
+	if currentTree.right == nil {
+		return currentTree
+	}
+
+	return max(currentTree.right)
+}
+
+// delete method for remove element from the tree
+func delete(currentTree *BTreeValue, value float64) *BTreeValue {
+	if currentTree == nil {
+		return currentTree
+	}
+
+	if value < currentTree.value {
+		currentTree.left = delete(currentTree.left, value)
+	} else if value > currentTree.value {
+		currentTree.right = delete(currentTree.right, value)
+	} else if currentTree.left != nil && currentTree.right != nil {
+		minNode := min(currentTree.right)
+
+		currentTree.value = minNode.value
+		currentTree.right = delete(currentTree.right, currentTree.value)
+	} else if currentTree.left != nil {
+		currentTree = currentTree.left
+	} else if currentTree.right != nil {
+		currentTree = currentTree.right
+	} else {
+		currentTree = nil
+	}
+
+	return currentTree
 }
 
 // compare is a private function for compare two numbers
